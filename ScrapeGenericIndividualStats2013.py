@@ -34,19 +34,22 @@ else:
 		for tr in statsTable.find_all('tr')[1:]:
 		 	tds = tr.find_all('td')
 		 	string  = re.match(r'^(\d*).(\d{3,6})', tds[5].text.strip())
+		 	formattedName = tds[3].text.strip().replace("'",'')
 		 	if (string != None) :
 		 		formatted = re.sub('\.', '', tds[5].text.strip())
+
 		 	else :
 		 		formatted = tds[5].text.strip()
 
+
 		 	if ((table != None) & (dbCursor != None)) :
-		 		strValues = tds[0].text[:-1] + ",'" + tds[3].text.strip() + "','" +  tds[4].text.strip() + "'," +  formatted + ', 2013-06-01 12:00:00'
+		 		strValues = tds[0].text[:-1] + ",'" + formattedName + "','" +  tds[4].text.strip() + "'," +  formatted + ", '2013-06-01 12:00:00'"
 		 		strQuery = """INSERT INTO """ + tableName.strip() + """(Rank, Name, Team, Points, Timestamp) VALUES (""" + strValues + """)"""
 		 		try:
 	    				dbCursor.execute(strQuery)
 				except Exception as e:
-	    				print "cannot insert into database! " + strQuery
-		 			print tds[0].text[:-1] + '\t' + tds[3].text.strip() + '\t' +  tds[4].text.strip() + '\t' +  formatted
+	    				print "cannot insert into database! " + e[0]
+		 			print tds[0].text[:-1] + '\t' + formattedName + '\t' +  tds[4].text.strip() + '\t' +  formatted
 			
 		conn.commit()
 		dbCursor.close()
