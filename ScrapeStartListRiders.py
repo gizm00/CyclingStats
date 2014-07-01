@@ -11,7 +11,7 @@ if len(sys.argv) < 2:
 else:
 	# connect to db
 	try:
-    		conn = psycopg2.connect("dbname='cycling_stats' user='postgres' host='localhost' password='")
+    		conn = psycopg2.connect("dbname='cycling_stats' user='postgres' host='localhost' password=''")
 	except:
     		print "unable to connect to the database"
 	else:		
@@ -46,13 +46,10 @@ else:
 					#	rightDiv = None
 					#if (rightDiv != None) :
 					strTeamValues = "( '" + team + "'"
-					strTeamInfo = """INSERT INTO cs_tdf_rosters ( Team""" 
+					strTeamInfo = "INSERT INTO cs_tdf_riders (Team, Name, Timestamp) VALUES ('" + team + "',"
 					for rider in riders:
-						strTeamInfo = strTeamInfo + ",Rider" + str(riderCount)
-						strTeamValues = strTeamValues + ",'" + rider + "'"
-						riderCount = riderCount + 1
-					#print strTeamInfo + ",Timestamp ) VALUES " + strTeamValues + ",current_timestamp )"""
-					print strTeamInfo + ",Timestamp ) VALUES " + strTeamValues + ", '2013-06-01 12:00:00' )"""
+						formatName = rider.strip().replace("'",'')
+						print strTeamInfo + "'" + formatName + "', current_timestamp);"
 					break;
 				if tag == "a" :
 					#print element.text
