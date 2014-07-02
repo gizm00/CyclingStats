@@ -1,8 +1,40 @@
-select cs_tdf_gc.name,cs_tdf_gc.points as TDF_GC,cs_tdf_mountains.points as TDF_Mountain ,cs_tdf_points.points as TDF_Points,
-	cs_individual_americatour.points as AMERICA_TOUR, cs_individual_europetour.points as EUROPE_TOUR, cs_individual_gc.points as GC,
-	cs_individual_hills.points as HILLS, cs_individual_mountains.points as MOUNTAINS, cs_individual_oneday.points as ONEDAY, 
-	cs_individual_pcs_rank.points as PCS_RANK, cs_individual_prologue.points as PROLOGUE, cs_individual_sprint.points as SPRINT,
-	cs_individual_worldtour.points as WORLD_TOUR
+select cs_tdf_gc.name,cs_tdf_gc.points as TDF_GC,
+	CASE WHEN cs_tdf_mountains.points IS NULL 
+		THEN 0
+		ELSE cs_tdf_mountains.points END TDF_Mountains,
+	CASE WHEN cs_tdf_points.points IS NULL 
+		THEN 0
+		ELSE cs_tdf_points.points END TDF_Points,
+	CASE WHEN cs_individual_americatour.points IS NULL 
+		THEN 0
+		ELSE cs_individual_americatour.points END AMERICA_TOUR,
+	CASE WHEN cs_individual_europetour.points IS NULL 
+		THEN 0
+		ELSE cs_individual_europetour.points END EUROPE_TOUR,
+	CASE WHEN cs_individual_gc.points IS NULL 
+		THEN 0
+		ELSE cs_individual_gc.points END GC,
+	CASE WHEN cs_individual_hills.points IS NULL 
+		THEN 0
+		ELSE cs_individual_hills.points END HILLS,
+	CASE WHEN cs_individual_mountains.points IS NULL 
+		THEN 0
+		ELSE cs_individual_mountains.points END MOUNTAINS,
+	CASE WHEN cs_individual_oneday.points IS NULL 
+		THEN 0
+		ELSE cs_individual_oneday.points END ONEDAY,
+	CASE WHEN cs_individual_pcs_rank.points IS NULL 
+		THEN 0
+		ELSE cs_individual_pcs_rank.points END PCS_RANK,
+	CASE WHEN cs_individual_prologue.points IS NULL 
+		THEN 0
+		ELSE cs_individual_prologue.points END PROLOGUE,
+	CASE WHEN cs_individual_sprint.points IS NULL 
+		THEN 0
+		ELSE cs_individual_sprint.points END SPRINT,
+	CASE WHEN cs_individual_worldtour.points IS NULL 
+		THEN 0
+		ELSE cs_individual_worldtour.points END WORLD_TOUR
 from cs_tdf_gc left outer join cs_tdf_mountains on cs_tdf_gc.name = cs_tdf_mountains.name 
 	left outer join cs_tdf_points on cs_tdf_gc.name = cs_tdf_points.name
 	left outer join cs_individual_americatour on ((cs_tdf_gc.name = cs_individual_americatour.name) AND extract(year from cs_individual_americatour.timestamp) = 2013)
