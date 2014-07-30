@@ -1,4 +1,5 @@
-select cs_tdf_gc.name,cs_tdf_gc.points as TDF_GC,
+COPY
+(select cs_tdf_gc.name, cs_tdf_gc.team, cs_tdf_gc.points as TDF_GC,
 	CASE WHEN cs_tdf_mountains.points IS NULL 
 		THEN 0
 		ELSE cs_tdf_mountains.points END TDF_Mountains,
@@ -47,3 +48,5 @@ from cs_tdf_gc left outer join cs_tdf_mountains on cs_tdf_gc.name = cs_tdf_mount
 	left outer join cs_individual_prologue on ((cs_tdf_gc.name = cs_individual_prologue.name) AND extract(year from cs_individual_prologue.timestamp) = 2013)
 	left outer join cs_individual_sprint on ((cs_tdf_gc.name = cs_individual_sprint.name) AND extract(year from cs_individual_sprint.timestamp) = 2013)
 	left outer join cs_individual_worldtour on ((cs_tdf_gc.name = cs_individual_worldtour.name) AND extract(year from cs_individual_worldtour.timestamp) = 2013) 
+)
+TO '/tmp/stats.csv' DELIMITER ',' CSV HEADER;
